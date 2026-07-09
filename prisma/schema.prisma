@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ELECTION_COMMITTEE
+  SUPER_ADMIN
+}
+
+enum ElectionType {
+  SRC
+  DEPARTMENTAL
+  HALL
+  CLASS
+}
+
+enum ElectionStatus {
+  PENDING
+  ACTIVE
+  CLOSED
+  ARCHIVED
+}
+
+enum CandidateStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  studentId     String   @unique
+  email         String   @unique
+  name          String
+  passwordHash  String
+  role          Role     @default(STUDENT)
+  department    String   @default("")
+  level         Int      @default(1)
+  isVerified    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  candidates         Candidate[]
+  votes              Vote[]
+  voterRegistrations VoterRegistration[]
+  auditLogs          AuditLog[]
+
+  @@index([studentId])
+  @@index([email])
+  @@index([role])
+}
+
+model Election {
+  id          String         @id @default(cuid())
+  title       String
+  type        ElectionType
+  description String         @default("")
+  startDate   DateTime
+  endDate     DateTime
+  status      ElectionStatus @default(PENDING)
+  department  String         @default("")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  positions          Position[]
+  votes              Vote[]
+  voterRegistrations VoterRegistration[]
+
+  @@index([type])
+  @@index([status])
+  @@index([startDate, endDate])
+}
+
+model Position {
+  id          String @id @default(cuid())
+  title       String
+  description String @default("")
+  maxVotes    Int    @default(1)
+  order       Int    @default(0)
+
+  electionId String
+  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+
+  candidates Candidate[]
+  votes      Vote[]
+
+  @@index([electionId])
+  @@unique([electionId, title])
+}
+
+model Candidate {
+  id          String          @id @default(cuid())
+  photoUrl    String          @default("")
+  manifesto   String          @default("")
+  status      CandidateStatus @default(PENDING)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  positionId String
+  position   Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+
+  votes Vote[]
+
+  @@unique([userId, positionId])
+  @@index([positionId])
+  @@index([status])
+}
+
+model Vote {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+
+  electionId  String
+  election    Election  @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  positionId  String
+  position    Position  @relation(fields: [positionId], references: [id], onDelete: Cascade)
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  voterId     String
+  voter       User      @relation(fields: [voterId], references: [id])
+
+  @@unique([voterId, electionId, positionId])
+  @@index([electionId])
+  @@index([positionId])
+  @@index([candidateId])
+}
+
+model VoterRegistration {
+  id        String   @id @default(cuid())
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  electionId String
+  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, electionId])
+  @@index([electionId])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String
+  resource   String
+  details    String   @default("")
+  ipAddress  String   @default("")
+  createdAt  DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
