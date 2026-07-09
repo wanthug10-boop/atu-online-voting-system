@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { DashboardShell } from "@/components/dashboard-shell";
 import { ResultsClient } from "./client";
 
 export const dynamic = "force-dynamic";
@@ -29,16 +30,12 @@ export default async function ResultsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <header className="border-b bg-background">
-        <div className="container flex h-16 items-center">
-          <h1 className="text-xl font-bold text-primary">ATU Voting - Results</h1>
-        </div>
-      </header>
-      <main className="container py-8">
-        <h2 className="mb-6 text-2xl font-bold">Election Results</h2>
-        <ResultsClient elections={JSON.parse(JSON.stringify(elections))} />
-      </main>
-    </div>
+    <DashboardShell>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold">Election Results</h1>
+        <p className="text-muted-foreground/70">Live vote counts and winners</p>
+      </div>
+      <ResultsClient elections={JSON.parse(JSON.stringify(elections))} />
+    </DashboardShell>
   );
 }

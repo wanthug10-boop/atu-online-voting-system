@@ -68,22 +68,22 @@ export function CommitteeElectionsClient({ elections: initial }: { elections: El
 
   return (
     <div className="space-y-6">
-      <Button onClick={() => setShowForm(!showForm)}>
+      <Button onClick={() => setShowForm(!showForm)} className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30">
         <Plus className="mr-2 h-4 w-4" /> New Election
       </Button>
 
       {showForm && (
-        <Card>
+        <Card className="glass rounded-2xl border-border/40 overflow-hidden">
           <CardContent className="pt-6">
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Election Title</Label>
-                  <Input id="title" name="title" required />
+                  <Label htmlFor="title" className="text-foreground/80">Election Title</Label>
+                  <Input id="title" name="title" required className="bg-background/50 border-border/30" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="type">Type</Label>
-                  <select id="type" name="type" className="flex h-10 w-full rounded-md border bg-background px-3 text-sm" required>
+                  <Label htmlFor="type" className="text-foreground/80">Type</Label>
+                  <select id="type" name="type" className="flex h-10 w-full rounded-md border border-border/30 bg-background/50 px-3 text-sm text-foreground/80" required>
                     <option value="SRC">SRC</option>
                     <option value="DEPARTMENTAL">Departmental</option>
                     <option value="HALL">Hall</option>
@@ -91,21 +91,21 @@ export function CommitteeElectionsClient({ elections: initial }: { elections: El
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="startDate">Start Date</Label>
-                  <Input id="startDate" name="startDate" type="datetime-local" required />
+                  <Label htmlFor="startDate" className="text-foreground/80">Start Date</Label>
+                  <Input id="startDate" name="startDate" type="datetime-local" required className="bg-background/50 border-border/30" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="endDate">End Date</Label>
-                  <Input id="endDate" name="endDate" type="datetime-local" required />
+                  <Label htmlFor="endDate" className="text-foreground/80">End Date</Label>
+                  <Input id="endDate" name="endDate" type="datetime-local" required className="bg-background/50 border-border/30" />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <textarea id="description" name="description" className="flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm" />
+                <Label htmlFor="description" className="text-foreground/80">Description</Label>
+                <textarea id="description" name="description" className="flex min-h-[80px] w-full rounded-md border border-border/30 bg-background/50 px-3 py-2 text-sm text-foreground/80" />
               </div>
               <div className="flex gap-2">
-                <Button type="submit" disabled={saving}>{saving ? "Creating..." : "Create"}</Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+                <Button type="submit" disabled={saving} className="bg-primary hover:bg-primary/90">{saving ? "Creating..." : "Create"}</Button>
+                <Button type="button" variant="outline" onClick={() => setShowForm(false)} className="border-border/30 hover:bg-background/50">Cancel</Button>
               </div>
             </form>
           </CardContent>
@@ -114,20 +114,20 @@ export function CommitteeElectionsClient({ elections: initial }: { elections: El
 
       <div className="space-y-4">
         {elections.map((election) => (
-          <Card key={election.id}>
+          <Card key={election.id} className="glass rounded-2xl border-border/40 card-3d card-hover overflow-hidden">
             <CardContent className="pt-6">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold">{election.title}</h3>
+                    <h3 className="font-semibold text-lg">{election.title}</h3>
                     <Badge variant={statusColors[election.status]}>{election.status}</Badge>
-                    <Badge variant="outline">{election.type}</Badge>
+                    <Badge variant="outline" className="bg-primary/5 border-primary/20 text-primary">{election.type}</Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">{election.description}</p>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span><Calendar className="inline h-3 w-3" /> {formatDate(election.startDate)}</span>
-                    <span><Users className="inline h-3 w-3" /> {election.positions.length} positions</span>
-                    <span><Vote className="inline h-3 w-3" /> {election._count.votes} votes</span>
+                  <p className="text-sm text-muted-foreground/70">{election.description}</p>
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground/60">
+                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {formatDate(election.startDate)}</span>
+                    <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {election.positions.length} positions</span>
+                    <span className="flex items-center gap-1"><Vote className="h-3 w-3" /> {election._count.votes} votes</span>
                   </div>
                 </div>
               </div>

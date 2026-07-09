@@ -48,23 +48,26 @@ export function AppNav({ role }: { role: string }) {
   else nav = voterNav;
 
   return (
-    <aside className="flex w-64 flex-col border-r bg-background">
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href="/dashboard" className="flex items-center gap-2 font-bold text-primary">
-          <Shield className="h-5 w-5" />
+    <aside className="flex h-screen w-64 flex-col border-r border-border/20 glass-strong">
+      <div className="flex h-16 items-center border-b border-border/20 px-6">
+        <Link href="/dashboard" className="flex items-center gap-2 font-bold text-gradient">
+          <Shield className="h-5 w-5 text-primary" />
           ATU Voting
         </Link>
       </div>
       <nav className="flex-1 space-y-1 p-4">
+        <p className="px-3 pb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
+          Navigation
+        </p>
         {nav.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
               pathname === item.href
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                ? "bg-primary/10 text-primary shadow-sm"
+                : "text-muted-foreground hover:bg-white/5 hover:text-foreground",
             )}
           >
             {item.icon}
@@ -72,8 +75,8 @@ export function AppNav({ role }: { role: string }) {
           </Link>
         ))}
       </nav>
-      <div className="border-t p-4">
-        <Button variant="outline" size="sm" className="w-full" onClick={() => signOut({ callbackUrl: "/" })}>
+      <div className="border-t border-border/20 p-4">
+        <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={() => signOut({ callbackUrl: "/" })}>
           <LogOut className="mr-2 h-4 w-4" /> Sign Out
         </Button>
       </div>

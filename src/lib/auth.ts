@@ -10,11 +10,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       name: "credentials",
       credentials: {
         studentId: { label: "Student ID", type: "text" },
-        email: { label: "University Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.studentId || !credentials?.email || !credentials?.password) {
+        if (!credentials?.studentId || !credentials?.password) {
           return null;
         }
 
@@ -24,9 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { studentId: credentials.studentId as string },
         });
 
-        if (!user || user.email !== credentials.email) {
-          return null;
-        }
+        if (!user) return null;
 
         const isValid = await compare(
           credentials.password as string,

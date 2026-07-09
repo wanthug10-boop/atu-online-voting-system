@@ -5,7 +5,7 @@ An online voting system for students at **Accra Technical University**. Built wi
 ## Features
 
 - **Multiple Election Types** — SRC, Departmental, Hall, and Class-level elections
-- **Secure Authentication** — Student ID + University Email with password
+- **Secure Authentication** — Student ID + Password only (email auto-generated)
 - **Role-Based Access** — Super Admin, Election Committee, and Student roles
 - **Candidate Management** — Photo upload, manifestos, approval workflow
 - **One Student, One Vote** — Prevents duplicate voting per position

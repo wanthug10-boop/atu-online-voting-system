@@ -7,10 +7,13 @@ export async function DashboardShell({ children }: { children: React.ReactNode }
   if (!session?.user) redirect("/auth/login");
 
   return (
-    <div className="flex min-h-screen">
+    <div className="relative flex min-h-screen overflow-hidden">
+      <div className="orb h-[600px] w-[600px] bg-emerald-500/8 -left-80 -top-80 animate-float fixed pointer-events-none" />
+      <div className="orb h-[400px] w-[400px] bg-cyan-500/6 right-0 bottom-0 animate-float-delayed fixed pointer-events-none" />
+      <div className="mesh-bg fixed inset-0 pointer-events-none" />
       <AppNav role={session.user.role} />
-      <main className="flex-1 overflow-auto bg-muted/30">
-        <div className="container py-8">{children}</div>
+      <main className="relative flex-1 overflow-auto">
+        <div className="container mx-auto px-6 py-8">{children}</div>
       </main>
     </div>
   );

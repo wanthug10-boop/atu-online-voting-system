@@ -4,11 +4,13 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const { studentId, email, name, department, level, password } = await req.json();
+    const { studentId, name, department, level, password } = await req.json();
 
-    if (!studentId || !email || !name || !password) {
+    if (!studentId || !name || !password) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    const email = `${studentId}@atu.edu.gh`;
 
     const existingUser = await prisma.user.findFirst({
       where: { OR: [{ studentId }, { email }] },
@@ -16,7 +18,7 @@ export async function POST(req: Request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "Student ID or email already registered" },
+        { error: "Student ID already registered" },
         { status: 409 },
       );
     }

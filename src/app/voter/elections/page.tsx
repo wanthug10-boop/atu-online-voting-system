@@ -34,14 +34,16 @@ export default async function VoterElectionsPage() {
   const votedPositions = new Set(existingVotes.map((v: { electionId: string; positionId: string }) => `${v.electionId}:${v.positionId}`));
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <header className="border-b bg-background">
-        <div className="container flex h-16 items-center">
-          <h1 className="text-xl font-bold text-primary">ATU Voting</h1>
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="orb h-[400px] w-[400px] bg-emerald-500/10 -left-48 -top-48 animate-float fixed" />
+      <div className="orb h-[300px] w-[300px] bg-cyan-500/6 right-0 top-1/3 animate-float-delayed fixed" />
+      <div className="mesh-bg fixed inset-0" />
+      <header className="relative z-10 border-b border-border/20 glass-strong">
+        <div className="container mx-auto flex h-16 items-center">
+          <h1 className="text-lg font-bold text-gradient">ATU Voting — Cast Your Vote</h1>
         </div>
       </header>
-      <main className="container py-8">
-        <h2 className="mb-6 text-2xl font-bold">Active Elections</h2>
+      <main className="relative z-10 container mx-auto px-4 py-8">
         <VoterElectionsClient
           elections={JSON.parse(JSON.stringify(elections))}
           votedPositions={Array.from(votedPositions) as string[]}
