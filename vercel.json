@@ -1,5 +1,7 @@
 {
   "env": {
-    "AUTH_SECRET": "48aJeyprf3iYWvTuGN1HsKMQ7VXbDSO5"
+    "AUTH_SECRET": "48aJeyprf3iYWvTuGN1HsKMQ7VXbDSO5",
+    "DATABASE_URL": "postgresql://neondb_owner:npg_LRc3vAXzfu9x@ep-winter-night-aj8n0q9a.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require",
+    "NEXTAUTH_URL": "https://atu-online-voting.vercel.app"
   }
 }
